@@ -52,3 +52,7 @@ body{
     position: absolute;
     cursor: pointer;
 }
+.carrot_count{
+    text-align: center; 
+    font: bold 72px 'inherit';
+}

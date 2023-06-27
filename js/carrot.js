@@ -4,11 +4,9 @@ const existingIcon = playBtn.querySelector('.fa-play');
 const timer = document.querySelector('.timer');
 const replay = document.querySelector('.replay');
 const elements = document.querySelector('.elements');
-// const carrots = document.querySelector('.carrots');
-// const bugs = document.querySelector('.bugs');
 
 // click start button
-playBtn.addEventListener('click', event => {
+playBtn.addEventListener('click', function handleClick(event) {
     const target = event.target;
     if(target.parentNode  === playBtn || target === playBtn){
         existingIcon && existingIcon.remove();
@@ -20,6 +18,7 @@ playBtn.addEventListener('click', event => {
         }
     }
     onStart();
+    playBtn.removeEventListener('click', handleClick);    
 });
 
 // start game
@@ -27,7 +26,6 @@ function onStart() {
     // 새 당근 수 생성
     
     // 당근과 벌레 생성 함수 호출
-    
     createElement();
     
     // 시작타이머 호출
@@ -76,6 +74,7 @@ timerElement.classList.add('view_timer');
 timer.appendChild(timerElement);
 timerElement.textContent = "00:00";
 
+
 // create replay button
 function createReplayBtn() {
     const replay = document.createElement('div');
@@ -102,8 +101,9 @@ function createReplayBtn() {
 }
 
 // create carrots and bugs
+let carrotCount = 0;
+const carrotCountElement = document.querySelector('.carrot_count');
 const elementsRect = elements.getBoundingClientRect();
-let isElementCreated = false;
 
 function createElement() {
     createLocaCarrot();
@@ -135,6 +135,12 @@ function createLocaCarrot() {
         carrot.style.top = `${y}px`;
 
         elements.appendChild(carrot);
+
+        carrot.addEventListener('click', () => {
+            carrot.remove();
+            carrotCount++;
+            carrotCountElement.textContent = carrotCount;
+        });
     }
 }
 
