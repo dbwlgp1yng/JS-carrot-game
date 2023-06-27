@@ -2,10 +2,13 @@
 button{ outline: none; }
 
 body{ 
-    height: 100%; 
+    width: 100vw;
+    height: 100vh; 
     background: url(../img/background.png) no-repeat;
     background-size: cover;
+    overflow: hidden;
 }
+
 .play_btn, .replay_btn{
     display: block;
     padding: 10px 20px; 
@@ -39,4 +42,13 @@ body{
     text-align: center; 
     color: #fff; 
     font: bold 36px 'inherit';
+}
+
+.elements{
+    position: absolute; left: 0; bottom: 0;
+    width: 100%; height: 250px;
+}
+.carrot, .bug{ 
+    position: absolute;
+    cursor: pointer;
 }
