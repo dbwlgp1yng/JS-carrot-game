@@ -23,8 +23,6 @@ playBtn.addEventListener('click', function handleClick(event) {
 
 // start game
 function onStart() {
-    // 새 당근 수 생성
-    
     // 당근과 벌레 생성 함수 호출
     createElement();
     
@@ -55,17 +53,13 @@ function startTimer() {
             (timerElement.textContent = `00:0${seconds}`)
             : (timerElement.textContent = `00:${seconds}`);
         seconds--;
-        if(seconds < 0 ) {
-            //  벌레를 클릭해도 추가로 
+        if(seconds < 0 ) { 
             clearInterval(countdown);
             if(isIconCreated) {
                 playBtn.style.display = 'none';
-                createReplayBtn();
             }
+            gameFail();
         } 
-        // else if() {
-        //     // 당근을 다 없애면 win
-        // }
     }, 1000);
 
 }
@@ -74,9 +68,32 @@ timerElement.classList.add('view_timer');
 timer.appendChild(timerElement);
 timerElement.textContent = "00:00";
 
+// create carrots and bugs
+let carrotCount = 0;
+let isElementCreated = false;
+const carrotCountElement = document.querySelector('.carrot_count');
+const elementsRect = elements.getBoundingClientRect();
 
-// create replay button
-function createReplayBtn() {
+
+function createElement() {
+    createLocaCarrot();
+    createLocaBug();
+}
+
+// regenerate Carrots and Bugs
+function replayGame() {
+    carrotCount = 0;
+    carrotCountElement.textContent = carrotCount;
+
+    const carrots = document.querySelectorAll('.carrot');
+    const bugs = document.querySelectorAll('.bug');
+    carrots.forEach(carrot => carrot.remove());
+    bugs.forEach(bug => bug.remove());
+
+    createElement();
+}
+
+function gameWin() {
     const replay = document.createElement('div');
     replay.classList.add('replay');
 
@@ -84,6 +101,30 @@ function createReplayBtn() {
     replayBtn.classList.add('replay_btn');
     replayBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i>';
 
+
+    const replayText = document.createElement('p');
+    replayText.classList.add('replay_text');
+    replayText.textContent = "YOU WIN!";
+    
+    wrap.appendChild(replay);
+    replay.appendChild(replayBtn);
+    replay.appendChild(replayText);
+
+    replayBtn.addEventListener('click', () => {
+        playBtn.style.display = 'block';
+        startTimer();
+        replay.parentNode.removeChild(replay);
+        replayGame();
+    });
+}
+
+function gameFail() {
+    const replay = document.createElement('div');
+    replay.classList.add('replay');
+
+    const replayBtn = document.createElement('button');
+    replayBtn.classList.add('replay_btn');
+    replayBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i>';
 
     const replayText = document.createElement('p');
     replayText.classList.add('replay_text');
@@ -97,25 +138,8 @@ function createReplayBtn() {
         playBtn.style.display = 'block';
         startTimer();
         replay.parentNode.removeChild(replay);
+        replayGame();
     });
-}
-
-// create carrots and bugs
-let carrotCount = 0;
-const carrotCountElement = document.querySelector('.carrot_count');
-const elementsRect = elements.getBoundingClientRect();
-
-function createElement() {
-    createLocaCarrot();
-    createLocaBug();
-}
-
-function gameWin() {
-
-}
-
-function gameFail() {
-    
 }
 
 function createLocaCarrot() {
@@ -140,6 +164,11 @@ function createLocaCarrot() {
             carrot.remove();
             carrotCount++;
             carrotCountElement.textContent = carrotCount;
+
+            if (carrotCount === 10) {
+                gameWin();
+                clearInterval(countdown);
+            }
         });
     }
 }
@@ -162,6 +191,11 @@ function createLocaBug() {
         bug.style.top = `${y}px`;
 
         elements.appendChild(bug);
+
+        bug.addEventListener('click', () => {
+            gameFail(); 
+            clearInterval(countdown);
+        });
     }
 }
 
@@ -169,3 +203,6 @@ function randomNumber(min, max) {
     // min과 max 사이의 랜덤한 숫자 가져오기
     return Math.random() * (max - min) + min;
 }
+
+// default value setting
+carrotCountElement.textContent = carrotCount;
