@@ -1,4 +1,4 @@
-const wrap = document.querySelector('.wrap');
+const game = document.querySelector('.game');
 const playBtn = document.querySelector('.play_btn');
 const existingIcon = playBtn.querySelector('.fa-play');
 const timer = document.querySelector('.timer');
@@ -101,12 +101,11 @@ function gameWin() {
     replayBtn.classList.add('replay_btn');
     replayBtn.innerHTML = '<i class="fa-solid fa-rotate-right"></i>';
 
-
     const replayText = document.createElement('p');
     replayText.classList.add('replay_text');
     replayText.textContent = "YOU WIN!";
     
-    wrap.appendChild(replay);
+    game.appendChild(replay);
     replay.appendChild(replayBtn);
     replay.appendChild(replayText);
 
@@ -130,7 +129,7 @@ function gameFail() {
     replayText.classList.add('replay_text');
     replayText.textContent = "YOU LOSE";
     
-    wrap.appendChild(replay);
+    game.appendChild(replay);
     replay.appendChild(replayBtn);
     replay.appendChild(replayText);
 
@@ -142,11 +141,12 @@ function gameFail() {
     });
 }
 
+const CARROT_SIZE = 80;
 function createLocaCarrot() {
     const xMin = 0;
     const yMin = 0;
-    const xMax = elementsRect.width;
-    const yMax = elementsRect.height;
+    const xMax = elementsRect.width - CARROT_SIZE;
+    const yMax = elementsRect.height - CARROT_SIZE;
     for (let i = 0; i < 10; i++) {
         const x = randomNumber(xMin, xMax);
         const y = randomNumber(yMin, yMax);
@@ -176,8 +176,8 @@ function createLocaCarrot() {
 function createLocaBug() {
     const xMin = 0;
     const yMin = 0;
-    const xMax = elementsRect.width;
-    const yMax = elementsRect.height;
+    const xMax = elementsRect.width - CARROT_SIZE;
+    const yMax = elementsRect.height - CARROT_SIZE;
 
     for (let i = 0; i < 8; i++) {
         const x = randomNumber(xMin, xMax);

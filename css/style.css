@@ -49,7 +49,6 @@ body{
     width: 100%; height: 250px;
 }
 .carrot, .bug{ 
-    position: absolute;
     cursor: pointer;
 }
 .carrot_count{
