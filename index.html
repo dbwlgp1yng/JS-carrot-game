@@ -3,21 +3,27 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+        <title>Document</title>
         <link rel="stylesheet" href="css/style.css">
-        <title>Carrot Game</title>
-        <script src="js/carrot.js" defer></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />
+        <script type="module" src="src/main.js" defer></script>
     </head>
     <body>
         <section class="game">
-            <div class="play">
-                <button class="play_btn" type="button">
+            <header class="game_header">
+                <button class="game_button">
                     <i class="fa-solid fa-play"></i>
                 </button>
-            </div>
-            <div class="timer"></div>
-            <div class="elements"></div>
-            <div class="carrot_count"></div>
+                <span class="game_timer">0:0</span>
+                <span class="game_score">9</span>
+            </header>
+            <section class="game_field"></section>
+        </section>
+        <section class="popup popup--hide">
+            <button class="popup_refresh">
+                <i class="fa-solid fa-rotate-right"></i>
+            </button>
+            <span class="popup_message">hello</span>
         </section>
     </body>
 </html>
