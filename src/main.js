@@ -6,9 +6,10 @@ import * as sound from "./sound.js";
 const gameFinishBanner = new PopUp();
 const game = new GameBuilder()
   .gameDuration(10)
-  .carrotCount(10)
-  .bugCount(10)
-  .build();
+  .carrotCount(3)
+  .bugCount(3)
+  .roundCount(3)
+  .build(); // game = new Game() 객체 생성
 
 game.setGameStopListener((reason) => {
   let message;
@@ -19,6 +20,10 @@ game.setGameStopListener((reason) => {
       break;
     case Reason.win:
       message = 'YOU WON!';
+      sound.playWin();
+      break;
+    case Reason.next:
+      message = 'NEXT LEVEL!';
       sound.playWin();
       break;
     case Reason.lose:
@@ -34,5 +39,3 @@ game.setGameStopListener((reason) => {
 gameFinishBanner.setClickListener(()=> {
   game.start();
 });
-
-

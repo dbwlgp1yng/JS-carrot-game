@@ -4,6 +4,7 @@ import * as sound from "./sound.js";
 
 export const Reason = Object.freeze({
   win: 'win',
+  next: 'next',
   lose: 'lose',
   cancel: 'cancel',
 });
@@ -24,6 +25,11 @@ export class GameBuilder {
     this.bugCount = num;
     return this;
   }
+
+  roundCount(count) {
+    this.roundCount = count;
+    return this;
+  }
   
   build() {
     return new Game(
@@ -35,18 +41,23 @@ export class GameBuilder {
 }
 
 class Game {
-  constructor(gameDuration, carrotCount, bugCount) {
+  constructor(gameDuration, carrotCount, bugCount, roundCount) {
     this.gameDuration = gameDuration;
     this.carrotCount = carrotCount;
     this.bugCount = bugCount;
+    this.roundCount = roundCount;
+    this.currentRound = 1; // 현재 라운드 초기화
+    this.started = false;
+    this.score = 0;
+    this.timer = undefined;
 
     this.gameTimer = document.querySelector(".game_timer");
     this.gameScore = document.querySelector(".game_score");
     this.gameBtn = document.querySelector(".game_button");
     this.gameBtn.addEventListener("click", () => {
-      if (this.started) {
+      if (this.started) { // 게임 시작 중 버튼 누르면 정지
         this.stop(Reason.cancel);
-      } else {
+      } else { // 게임 시작
         this.start();
       }
     });
@@ -54,14 +65,16 @@ class Game {
     this.gameField = new Field(carrotCount, bugCount);
     this.gameField.setClickListener(this.onItemClick);
 
-    this.started = false;
-    this.score = 0;
-    this.timer = undefined;
+  }
+
+  showBanner(reason) { 
+    // setGameStopListener 메서드의 매개변수로 들어오는 함수가 세팅됨
   }
 
   setGameStopListener(onGameStop) { 
-    this.onGameStop = onGameStop;
+    this.showBanner = onGameStop;
   }
+
   start() {
     this.started = true;
     this.initGame();
@@ -75,20 +88,32 @@ class Game {
     this.stopGameTimer();
     this.hideGameButton();
     sound.stopBackground();
-    this.onGameStop && this.onGameStop(reason);
+    this.showBanner(reason);    
+
+    if (this.currentRound < 3) {
+      console.log(this.currentRound);
+      this.currentRound++;
+    } else if (this.currentRound === 3) {
+      console.log("종료");
+      this.currentRound = 1;
+    }
   }
 
-  onItemClick = (item) => {
+  onItemClick = (item) => { // 당근 혹은 벌레 클릭시 호출
     if (!this.started) {
       return;
     }
-    if (item === ItemType.carrot) {
+    if (item === ItemType.carrot) { // 당근을 클릭했을 때
       this.score++;
       this.updateScoreBoard();
-      if (this.score === this.carrotCount) {
-        this.stop(Reason.win);
+      if (this.score === this.carrotCount) { // 당근을 모두 클릭하면 실행
+        if(this.currentRound < 3) {
+          this.stop(Reason.next);
+        } else {
+          this.stop(Reason.win);
+        }
       }
-    } else if (item === ItemType.bug) {
+    } else if (item === ItemType.bug) { // 벌레를 클릭했을 때
       this.stop(Reason.lose);
     }
   };
