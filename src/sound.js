@@ -24,7 +24,7 @@ export function stopBackground() {
 }
 
 function playSound(sound) {
-    sound.cureentTime = 0;
+    sound.currentTime = 0;
     sound.play();
 }
 function stopSound(sound) {
