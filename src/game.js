@@ -1,6 +1,7 @@
 "use strict";
 import { Field, ItemType } from "./field.js";
 import * as sound from "./sound.js";
+import PopUp from "./popup.js";
 
 export const Reason = Object.freeze({
   win: 'win',
@@ -90,13 +91,22 @@ class Game {
     sound.stopBackground();
     this.showBanner(reason);    
 
+    if(reason === 'lose') {
+      this.currentRound = 1;
+      return;
+    }
+    // if(reason === 'cancel') {
+    //   return;
+    //   컨티뉴추가예정
+    // }
+
     if (this.currentRound < 3) {
       console.log(this.currentRound);
       this.currentRound++;
     } else if (this.currentRound === 3) {
       console.log("종료");
       this.currentRound = 1;
-    }
+    } 
   }
 
   onItemClick = (item) => { // 당근 혹은 벌레 클릭시 호출

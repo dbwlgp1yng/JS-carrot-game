@@ -17,18 +17,22 @@ game.setGameStopListener((reason) => {
     case Reason.cancel:
       message = 'Replay?';
       sound.playAlert();
+      gameFinishBanner.changeRefreshIcon(reason);
       break;
     case Reason.win:
       message = 'YOU WON!';
       sound.playWin();
+      gameFinishBanner.changeRefreshIcon(reason);
       break;
     case Reason.next:
       message = 'NEXT LEVEL!';
       sound.playWin();
+      gameFinishBanner.changeRefreshIcon(reason);
       break;
     case Reason.lose:
       message = 'YOU LOST!';
       sound.playBug();
+      gameFinishBanner.changeRefreshIcon(reason);
       break;
     default:
       throw new Error('not valid reason');
