@@ -6,10 +6,26 @@ export default class PopUp {
     // 인스턴스 초기화 
     this.popUp = document.querySelector(".popup");
     this.popUpRefresh = document.querySelector(".popup_refresh");
+    this.popUpContinue = document.querySelector(".popup_continue");
     this.popUpText = document.querySelector(".popup_message");
     this.popUpRefresh.addEventListener('click', () => {
-      this.onClick && this.onClick(); 
+      // this.onClick && this.onClick(); 
+      if(this.onClick) {
+        this.onClick();
+      }
       this.hide();
+    })
+    this.popUpRefresh.addEventListener('mouseover', (e) => {
+      this.popUpText.innerText = 'Replay?';
+    })
+    this.popUpRefresh.addEventListener('mouseout', (e) => {
+      this.popUpText.innerText = 'Pause';
+    })
+    this.popUpContinue.addEventListener('mouseover', (e) => {
+      this.popUpText.innerText = 'Continue?';
+    })
+    this.popUpContinue.addEventListener('mouseout', (e) => {
+      this.popUpText.innerText = 'Pause';
     })
   }
 

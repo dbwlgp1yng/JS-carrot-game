@@ -82,7 +82,7 @@ class Game {
     this.showStopButton();
     this.showTimerAndScore();
     this.startGameTimer();
-    sound.playBackground();
+    // sound.playBackground();
   }
   stop(reason) {
     this.started = false;

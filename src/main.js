@@ -15,7 +15,7 @@ game.setGameStopListener((reason) => {
   let message;
   switch(reason) {
     case Reason.cancel:
-      message = 'Replay?';
+      message = 'Pause';
       sound.playAlert();
       gameFinishBanner.changeRefreshIcon(reason);
       break;
