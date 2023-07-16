@@ -7,14 +7,26 @@ export default class PopUp {
     this.popUp = document.querySelector(".popup");
     this.popUpRefresh = document.querySelector(".popup_refresh");
     this.popUpContinue = document.querySelector(".popup_continue");
+    this.popUpNext = document.querySelector(".popup_next");
     this.popUpText = document.querySelector(".popup_message");
-    this.popUpRefresh.addEventListener('click', () => {
+
+    this.popUpRefresh.addEventListener('click', () => { // replay 버튼 클릭시 실행
       // this.onClick && this.onClick(); 
-      if(this.onClick) {
-        this.onClick();
+      if(this.replayBtnClick) {
+        this.replayBtnClick(); // game.start() 로 설정된다.
       }
-      this.hide();
+      this.hide(); // popup창 숨김
     })
+    this.popUpContinue.addEventListener('click', () => { // continue 버튼 클릭시 실행
+      this.hide();
+      this.continueBtnClick();
+    })
+    this.popUpNext.addEventListener('click', () => { // next 버튼 클릭시 실행
+      this.hide(); 
+      this.nextBtnClick();
+
+    })
+
     this.popUpRefresh.addEventListener('mouseover', (e) => {
       this.popUpText.innerText = 'Replay?';
     })
@@ -29,9 +41,15 @@ export default class PopUp {
     })
   }
 
-  setClickListener(onClick) {
-    this.onClick = onClick;
+  setReplayBtnClickListener(replayBtnClick) {
+    this.replayBtnClick = replayBtnClick;
   }  
+  setContinueBtnClickListener(continueBtnClick) {
+    this.continueBtnClick = continueBtnClick;
+  }
+  setNextBtnClickListener(nextBtnClick) {
+    this.nextBtnClick = nextBtnClick;
+  }
 
   showWithText(text) {
     this.popUpText.innerText = text;
@@ -42,17 +60,24 @@ export default class PopUp {
     this.popUp.classList.add('popup--hide');
   }
 
-  changeRefreshIcon(reason) { // 1,2 라운드에 next 아이콘으로 변경
-    const refreshIconTag = this.popUpRefresh.children[0]; // i 태그
-    const refreshIconClassName = this.popUpRefresh.children[0].classList[1]; // fa-rotate-right
-    if(reason === 'next') {
-      if(refreshIconClassName === 'fa-rotate-right') {
-        refreshIconTag.classList.remove('fa-rotate-right'); 
-        refreshIconTag.classList.add('fa-arrow-right');   
-      } 
-    } else {
-      refreshIconTag.classList.remove('fa-arrow-right');
-      refreshIconTag.classList.add('fa-rotate-right'); 
-    } 
-  } 
+  showIcon() {
+    if(this.popUpRefresh.classList.contains('popup--hide')) {
+      this.popUpRefresh.classList.remove('popup--hide');
+    }
+    if(this.popUpContinue.classList.contains('popup--hide')) {
+      this.popUpContinue.classList.remove('popup--hide');
+    }
+    if(this.popUpNext.classList.contains('popup--hide')) {
+      this.popUpNext.classList.remove('popup--hide');
+    }
+  }
+  hideRefreshIcon() {
+    this.popUpRefresh.classList.add('popup--hide');
+  }
+  hideContinueIcon() {
+    this.popUpContinue.classList.add('popup--hide');
+  }
+  hideNextIcon() {
+    this.popUpNext.classList.add('popup--hide');
+  }
 }

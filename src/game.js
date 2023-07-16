@@ -59,13 +59,13 @@ class Game {
       if (this.started) { // 게임 시작 중 버튼 누르면 정지
         this.stop(Reason.cancel);
       } else { // 게임 시작
+        console.log("게임 시작")
         this.start();
       }
     });
 
     this.gameField = new Field(carrotCount, bugCount);
     this.gameField.setClickListener(this.onItemClick);
-
   }
 
   showBanner(reason) { 
@@ -75,14 +75,29 @@ class Game {
   setGameStopListener(onGameStop) { 
     this.showBanner = onGameStop;
   }
+  roundReset() {
+    this.currentRound = 1;  
+  }
 
-  start() {
+  start() { // 맨 처음 시작할때, 리플레이 버튼 누를 시 실행
     this.started = true;
     this.initGame();
     this.showStopButton();
     this.showTimerAndScore();
     this.startGameTimer();
-    // sound.playBackground();
+    sound.playBackground();
+  }
+  continue() {
+    this.started = true;
+    this.showStopButton();
+    // this.showTimerAndScore();
+    // this.startGameTimer();
+  }
+  next() {
+    this.initGame();
+    this.showStopButton();
+    this.showTimerAndScore();
+    this.startGameTimer();
   }
   stop(reason) {
     this.started = false;
@@ -90,23 +105,21 @@ class Game {
     this.hideGameButton();
     sound.stopBackground();
     this.showBanner(reason);    
-
+    console.log(this.currentRound);
     if(reason === 'lose') {
       this.currentRound = 1;
       return;
     }
-    // if(reason === 'cancel') {
-    //   return;
-    //   컨티뉴추가예정
-    // }
 
     if (this.currentRound < 3) {
-      console.log(this.currentRound);
-      this.currentRound++;
+      if(reason !== 'cancel') {
+        this.currentRound++;
+      }
     } else if (this.currentRound === 3) {
-      console.log("종료");
-      this.currentRound = 1;
-    } 
+      if(reason !== 'cancel') {
+        this.currentRound++;
+      }
+    }
   }
 
   onItemClick = (item) => { // 당근 혹은 벌레 클릭시 호출

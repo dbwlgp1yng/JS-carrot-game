@@ -5,7 +5,7 @@ import * as sound from "./sound.js";
 
 const gameFinishBanner = new PopUp();
 const game = new GameBuilder()
-  .gameDuration(10)
+  .gameDuration(5)
   .carrotCount(3)
   .bugCount(3)
   .roundCount(3)
@@ -13,26 +13,30 @@ const game = new GameBuilder()
 
 game.setGameStopListener((reason) => {
   let message;
+  gameFinishBanner.showIcon(); // popup hide클래스 삭제
   switch(reason) {
     case Reason.cancel:
       message = 'Pause';
       sound.playAlert();
-      gameFinishBanner.changeRefreshIcon(reason);
+      gameFinishBanner.hideNextIcon(reason);
       break;
     case Reason.win:
       message = 'YOU WON!';
       sound.playWin();
-      gameFinishBanner.changeRefreshIcon(reason);
+      gameFinishBanner.hideContinueIcon(reason);
+      gameFinishBanner.hideNextIcon(reason);
       break;
     case Reason.next:
       message = 'NEXT LEVEL!';
       sound.playWin();
-      gameFinishBanner.changeRefreshIcon(reason);
+      gameFinishBanner.hideRefreshIcon(reason);
+      gameFinishBanner.hideContinueIcon(reason);
       break;
     case Reason.lose:
       message = 'YOU LOST!';
       sound.playBug();
-      gameFinishBanner.changeRefreshIcon(reason);
+      gameFinishBanner.hideContinueIcon(reason);
+      gameFinishBanner.hideNextIcon(reason);
       break;
     default:
       throw new Error('not valid reason');
@@ -40,6 +44,18 @@ game.setGameStopListener((reason) => {
   gameFinishBanner.showWithText(message);
 });
 
-gameFinishBanner.setClickListener(()=> {
+gameFinishBanner.setReplayBtnClickListener(()=> { // replay 시 호출
+  console.log("setReplayBtnClickListener 호출")
+  game.roundReset();
+  game.start();
+});
+
+gameFinishBanner.setContinueBtnClickListener(() => {
+  console.log("setContinueBtnClickListener 호출")
+  game.continue();
+});
+
+gameFinishBanner.setNextBtnClickListener(() => {
+  console.log("setNextBtnClickListener 호출")
   game.start();
 });
