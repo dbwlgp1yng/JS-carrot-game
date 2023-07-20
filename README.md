@@ -17,8 +17,9 @@
 - play 버튼을 통해 새로고침하여 다시 게임을 replay 할 수 있도록 처리
   <br>+ continue 버튼으로 게임 재개할 수 있는 코드 추가
 - 총 3라운드 구성 : 1,2 라운드 성공 시 Next Level로 넘어가도록 처리
-
+- 아래는 초기 버전의 이미지이며, 현재 기능 개선 중입니다.
 <img src="readme/carrot-howtoplay.gif" width="600px">
+
 
 ### 💡 Future Scope
 - level 별로 당근과 벌레 갯수 증가시키기
