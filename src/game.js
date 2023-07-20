@@ -76,8 +76,8 @@ class Game {
   setGameStopListener(onGameStop) { 
     this.showBanner = onGameStop;
   }
-  roundReset() {
-    this.currentRound = 1;  
+  roundReset() { // replay 버튼 클릭시 1라운드로 초기화
+    this.currentRound = 1; 
   }
 
   start() { // 맨 처음 시작할때, 리플레이 버튼 누를 시 실행
@@ -115,6 +115,7 @@ class Game {
     }
     if(reason === 'next') {
       this.remainingTimeSec = this.gameDuration;
+      this.currentRound++;
       return;
     }
 
