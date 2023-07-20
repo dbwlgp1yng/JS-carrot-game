@@ -12,22 +12,22 @@ export const Reason = Object.freeze({
 
 // Builder Pattern
 export class GameBuilder {
-  gameDuration(duration) {
+  setGameDuration(duration) {
     this.gameDuration = duration;
     return this;
   }
 
-  carrotCount(num) {
+  setCarrotCount(num) {
     this.carrotCount = num;
     return this;
   }
 
-  bugCount(num) {
+  setBugCount(num) {
     this.bugCount = num;
     return this;
   }
 
-  roundCount(count) {
+  setRoundCount(count) {
     this.roundCount = count;
     return this;
   }
@@ -44,13 +44,14 @@ export class GameBuilder {
 class Game {
   constructor(gameDuration, carrotCount, bugCount, roundCount) {
     this.gameDuration = gameDuration;
+    this.remainingTimeSec = this.gameDuration; 
     this.carrotCount = carrotCount;
     this.bugCount = bugCount;
     this.roundCount = roundCount;
     this.currentRound = 1; // 현재 라운드 초기화
     this.started = false;
     this.score = 0;
-    this.timer = undefined;
+    this.timer = null;
 
     this.gameTimer = document.querySelector(".game_timer");
     this.gameScore = document.querySelector(".game_score");
@@ -80,6 +81,7 @@ class Game {
   }
 
   start() { // 맨 처음 시작할때, 리플레이 버튼 누를 시 실행
+    this.remainingTimeSec = this.gameDuration; // 타이머 초기화
     this.started = true;
     this.initGame();
     this.showStopButton();
@@ -90,8 +92,9 @@ class Game {
   continue() {
     this.started = true;
     this.showStopButton();
-    // this.showTimerAndScore();
-    // this.startGameTimer();
+    this.showTimerAndScore();
+    this.startGameTimer();
+    sound.playBackground();
   }
   next() {
     this.initGame();
@@ -108,6 +111,10 @@ class Game {
     console.log(this.currentRound);
     if(reason === 'lose') {
       this.currentRound = 1;
+      return;
+    }
+    if(reason === 'next') {
+      this.remainingTimeSec = this.gameDuration;
       return;
     }
 
@@ -155,16 +162,15 @@ class Game {
     this.gameScore.style.visibility = "visible";
   }
   startGameTimer() {
-    let remainingTimeSec = this.gameDuration;
-    this.updateTimerText(remainingTimeSec);
+    this.updateTimerText(this.remainingTimeSec);
 
     this.timer = setInterval(() => {
-      if (remainingTimeSec <= 0) {
+      if (this.remainingTimeSec <= 0) {
         clearInterval(this.timer);
         this.stop(this.carrotCount === this.score ? Reason.win : Reason.lose);
         return;
       }
-      this.updateTimerText(--remainingTimeSec);
+      this.updateTimerText(--this.remainingTimeSec);
     }, 1000);
   }
   stopGameTimer() {

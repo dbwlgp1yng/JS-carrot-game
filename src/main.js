@@ -5,10 +5,10 @@ import * as sound from "./sound.js";
 
 const gameFinishBanner = new PopUp();
 const game = new GameBuilder()
-  .gameDuration(5)
-  .carrotCount(3)
-  .bugCount(3)
-  .roundCount(3)
+  .setGameDuration(5)
+  .setCarrotCount(3)
+  .setBugCount(3)
+  .setRoundCount(3)
   .build(); // game = new Game() 객체 생성
 
 game.setGameStopListener((reason) => {
